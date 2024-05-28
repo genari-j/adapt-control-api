@@ -1,14 +1,17 @@
-## Controle Flexível - API 🚀
+## Adapt Control - API 🚀
 
-![Static Badge](https://img.shields.io/badge/VISUAL%20STUDIO%20CODE-2490D1?style=for-the-badge&logo=visual-studio-code&logoColor=000000&labelColor=24A9FA)
-![Static Badge](https://img.shields.io/badge/Node-0A9047?style=for-the-badge&logo=node.js&labelColor=black)
-![Static Badge](https://img.shields.io/badge/yarn-0B80BB?style=for-the-badge&logo=yarn&logoColor=white&labelColor=0B80BB)
-![Static Badge](https://img.shields.io/badge/fastify-000000?style=for-the-badge&logo=fastify&logoColor=white&labelColor=black)
-![Static Badge](https://img.shields.io/badge/typescript-0B88F7?style=for-the-badge&logo=typescript&logoColor=0B88F7&labelColor=black)
-![Static Badge](https://img.shields.io/badge/prisma-063E7C?style=for-the-badge&logo=prisma&logoColor=white&labelColor=black)
-![Static Badge](https://img.shields.io/badge/MySQL-0B7FAA?style=for-the-badge&logo=mysql&logoColor=%23000&labelColor=orange)
-![Static Badge](https://img.shields.io/badge/ZOD-0822A2?style=for-the-badge&logo=zod&logoColor=%23000&labelColor=1481FC)
-![Static Badge](https://img.shields.io/badge/dotenv-D0D302?style=for-the-badge&logo=.env&logoColor=D0D302&labelColor=black)
+<div align="center">
+
+  ![Static Badge](https://img.shields.io/badge/Node-0A9047?style=for-the-badge&logo=node.js&labelColor=black)
+  ![Static Badge](https://img.shields.io/badge/fastify-000000?style=for-the-badge&logo=fastify&logoColor=white&labelColor=black)
+  ![Static Badge](https://img.shields.io/badge/typescript-0B88F7?style=for-the-badge&logo=typescript&logoColor=0B88F7&labelColor=black)
+  ![Static Badge](https://img.shields.io/badge/prisma-063E7C?style=for-the-badge&logo=prisma&logoColor=white&labelColor=black)
+  ![Static Badge](https://img.shields.io/badge/MySQL-0B7FAA?style=for-the-badge&logo=mysql&logoColor=%23000&labelColor=orange)
+  ![Static Badge](https://img.shields.io/badge/ZOD-0822A2?style=for-the-badge&logo=zod&logoColor=%23000&labelColor=1481FC)
+  ![Static Badge](https://img.shields.io/badge/dotenv-D0D302?style=for-the-badge&logo=.env&logoColor=D0D302&labelColor=black)
+  ![Static Badge](https://img.shields.io/badge/yarn-0B80BB?style=for-the-badge&logo=yarn&logoColor=white&labelColor=0B80BB)
+
+</div>
 
 Este projeto é uma API desenvolvida utilizando **[Node](https://nodejs.org/en), [Fastify](https://fastify.dev/), [Typescript](https://www.typescriptlang.org/), [Prisma](https://www.prisma.io/), [ZOD](https://zod.dev/) and [MySQL](https://www.mysql.com/) como Banco de dados.** 
 
@@ -70,8 +73,8 @@ A API fornece os seguintes Endpoints:
 | /users/:id            | PUT                   | Update user                    |
 | /users/:id            | DELETE                | Disable user                   |
 | /verify-token         | GET                   | Verify token to reset password |
-| /sol-reset-psw        | POST                  | Solicitation reset password    |
-| /update-password      | POST                  | Confirm new passowrd           |
+| /sol-reset-psw        | POST                  | Solicitation to reset password |
+| /update-password      | POST                  | Confirm new password           |
 
 #### Departments:
 
