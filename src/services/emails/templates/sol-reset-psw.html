@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adapt Control - Reset de Senha</title>
+  </head>
+
+  <body>
+    <div>
+      <p>
+        Olá, {{ name }}! <br /> <br />
+        Uma solicitação de Reset de Senha foi realizada para sua conta. <br />
+        Se você não foi o autor, apenas descarte esse e-mail.
+      </p>
+
+      <p>
+        Para redefinir sua senha, clique no link abaixo: <br />
+        <a href="{{ emailLink }}" class="link-invitation" target="_blank">
+          <span class="span-invitation">Redefinir senha</span>
+        </a>
+      </p>
+
+      <p>Lembre-se de criar uma senha única e não fornecer suas credenciais.</p>
+
+      <p>Obrigado por utilizar o sistema.</p>
+
+      <p>Atenciosamente,</p>
+      <h4>Adapt Control</h4>
+    </div>
+  </body>
+</html>

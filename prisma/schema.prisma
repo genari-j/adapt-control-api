@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Department {
+  id         Int       @id @unique @default(autoincrement())
+  name       String    @unique
+  active     Boolean   @default(true)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+  // O Prisma já mapeia automaticamente de 1 pra N
+  // Ele avisa que a entidade Department tem ligação com a entidade de Usuários
+  users      Users[]
+
+  // Informando para o prisma criar a tabela com esse nome
+  // O @ duplo é justo para falar que isso se aplica para essa model inteira
+  @@map("departments")
+}
+
+model Profile {
+  id          Int       @id @unique @default(autoincrement())
+  name        String    @unique
+  description String
+  active      Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+  users       Users[]
+
+  @@map("profiles")
+}
+
+model Users {
+  id            Int        @id @unique @default(autoincrement())
+  name          String
+  user_code     Int        @unique
+  email         String?
+  password      String
+  department    Department @relation(fields: [department_id], references: [id])
+  department_id Int
+  profile       Profile    @relation(fields: [profile_id], references: [id])
+  profile_id    Int
+  active        Boolean    @default(true)
+  avatar        String?
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+  deleted_at    DateTime?
+
+  @@map("users")
+}
+
+model Profile_permission {
+  id          Int       @id @unique @default(autoincrement())
+  code        String    @unique
+  description String
+  active      Boolean   @default(true)
+  profiles    String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+
+  @@map("profile_permissions")
+}
+
+model Categories {
+  id          Int       @id @unique @default(autoincrement())
+  name        String    @unique
+  description String
+  active      Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+  Product     Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id                        Int                         @id @unique @default(autoincrement())
+  name                      String                      @unique
+  description               String
+  quantity                  Int
+  price                     Decimal                     @db.Decimal(10, 2)
+  category                  Categories                  @relation(fields: [category_id], references: [id])
+  category_id               Int
+  avatar                    String?
+  active                    Boolean                     @default(true)
+  created_at                DateTime                    @default(now())
+  updated_at                DateTime                    @updatedAt
+  deleted_at                DateTime?
+  Sale_relationship_product Sale_relationship_product[]
+
+  @@map("products")
+}
+
+model Payment {
+  id         Int       @id @unique @default(autoincrement())
+  name       String    @unique
+  active     Boolean   @default(true)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+  Sale       Sale[]
+
+  @@map("payments")
+}
+
+model Sale {
+  id                        Int                         @id @unique @default(autoincrement())
+  total                     Decimal                     @db.Decimal(10, 2)
+  payment                   Payment                     @relation(fields: [payment_id], references: [id])
+  payment_id                Int
+  sale_date                 DateTime
+  created_at                DateTime                    @default(now())
+  updated_at                DateTime                    @updatedAt
+  deleted_at                DateTime?
+  Sale_relationship_product Sale_relationship_product[]
+
+  @@map("sales")
+}
+
+model Sale_relationship_product {
+  id             Int       @id @unique @default(autoincrement())
+  sale           Sale      @relation(fields: [sale_id], references: [id])
+  sale_id        Int
+  product        Product   @relation(fields: [product_id], references: [id])
+  product_id     Int
+  amount_product Int
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+  deleted_at     DateTime?
+
+  @@map("sales_relationship_product")
+}
