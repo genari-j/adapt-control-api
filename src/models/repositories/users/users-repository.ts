@@ -13,6 +13,9 @@ class Repository extends RestRepository {
 
     const [data, total] = await prismaClient.$transaction([
       prismaClient.users.findMany({
+        orderBy: {
+          created_at: 'desc'
+        },
         where: whereClause,
         include: {
           department: true,

@@ -22,6 +22,6 @@ export const updateProductBodySchema = z.object({
   quantity: z.number().min(1, 'Quantidade inválida'),
   category_id: z.number().min(1, 'Categoria inválida'),
   price: z.number().multipleOf(0.01),
-  active: z.boolean().optional()
-  // avatar: z.instanceof(FileList).optional()
+  active: z.boolean().optional(),
+  avatar: z.any()
 })

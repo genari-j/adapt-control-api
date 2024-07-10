@@ -1,7 +1,7 @@
 import multer from 'fastify-multer'
 
 export const createStorage = (destinationPath: string) => {
-  return multer.diskStorage({
+  const storage = multer.diskStorage({
     destination: function (_req, _file, cb) {
       cb(null, destinationPath)
     },
@@ -9,7 +9,6 @@ export const createStorage = (destinationPath: string) => {
       cb(null, Date.now() + '-' + file.originalname)
     }
   })
+  const upload = multer({ storage: storage })
+  return upload
 }
-
-export const userStorage = createStorage('./src/uploads/users')
-export const productStorage = createStorage('./src/uploads/products')

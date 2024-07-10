@@ -9,7 +9,7 @@ interface Profiles {
 
 interface ProfilesRepository {
   findAll (skip: number, limit: number, filters: any): Promise<Profiles[]>
-  findOneBy (field: string | number, value: string | number): Promise<Profiles[]>
+  findOneBy (field: string | number, value: string | number): Promise<Profiles>
 }
 
 export {

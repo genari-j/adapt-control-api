@@ -23,7 +23,7 @@ export class RestRepository {
       where: whereClause
     })
 
-    return [result]
+    return result
   }
 
   async findAll (skip: number, take: number, filters: Record<string, any> = {}) {

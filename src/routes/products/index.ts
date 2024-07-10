@@ -1,9 +1,7 @@
 import { FastifyInstance, FastifyPluginAsync } from 'fastify'
 
-import multer from 'fastify-multer'
-import { productStorage } from '../../helpers'
-
 import { authMiddleware } from '../../middlewares/auth'
+import { createStorage } from '../../helpers'
 
 import { ProductsController } from '../../controllers/products/products-controller'
 import { ProductsRepository } from '../../models/repositories/products'
@@ -14,7 +12,7 @@ const controller = new ProductsController(
   CategoriesRepository
 )
 
-const upload = multer({ storage: productStorage })
+const upload = createStorage('./uploads/products')
 
 const productsRoutes: FastifyPluginAsync = async (fastify: FastifyInstance) => {
   fastify.get('/products', { preHandler: [authMiddleware] }, controller.getAll.bind(controller))

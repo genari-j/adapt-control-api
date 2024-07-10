@@ -24,7 +24,7 @@ type Sales = {
 interface SalesRepository {
   findAllSales (skip: number, limit: number, filters: any): Promise<Sales>
   findAll (skip: number, limit: number, filters: any): Promise<Sale[]>
-  findOneBy (field: string | number, value: string | number): Promise<Sale[]>
+  findOneBy (field: string | number, value: string | number): Promise<Sale>
   create (payload: CreateSale): Promise<Sale>
 }
 

@@ -20,13 +20,13 @@ export const userParamsSchema = z.object({
 })
 
 export const signInBodySchema = z.object({
-  user_code: z.string().min(1, 'Login inválido').transform(val => Number(val)),
+  user_code: z.number().min(1, 'Login inválido').transform(val => Number(val)),
   password: z.string().min(1, 'Senha inválida')
 })
 
 export const signUpBodySchema = z.object({
   name: z.string().min(1, 'Nome inválido'),
-  user_code: z.string().min(1, 'Login inválido').transform(val => Number(val)),
+  user_code: z.number().min(1, 'Login inválido').transform(val => Number(val)),
   email: z.string()
     .optional()
     .refine((value) => value !== undefined ? value.endsWith('@hotmail.com') : null, {
@@ -34,13 +34,12 @@ export const signUpBodySchema = z.object({
     }),
   password: z.string().min(6, 'A senha deve conter no mínimo 6 caracteres'),
   department_id: z.number().min(1, 'Departamento inválido'),
-  profile_id: z.number().min(1, 'Perfil inválido'),
-  avatar: z.string().optional()
+  profile_id: z.number().min(1, 'Perfil inválido')
 })
 
 export const updateUserBodySchema = z.object({
   name: z.string().min(1, 'Nome inválido'),
-  user_code: z.string().min(1, 'Login inválido').transform(number => Number(number)),
+  user_code: z.number().min(1, 'Login inválido').transform(number => Number(number)),
   email: z.string()
     .optional()
     .refine((value) => value !== undefined ? value.endsWith('@hotmail.com') : null, {
@@ -49,5 +48,5 @@ export const updateUserBodySchema = z.object({
   department_id: z.number().min(1, 'Departamento inválido'),
   profile_id: z.number().min(1, 'Perfil inválido'),
   active: z.boolean().optional(),
-  avatar: z.string().optional()
+  avatar: z.instanceof(File).optional()
 })

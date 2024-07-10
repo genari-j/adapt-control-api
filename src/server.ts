@@ -1,6 +1,6 @@
 import fastify, { FastifyRequest, FastifyReply } from 'fastify'
+import multipart from '@fastify/multipart'
 import cors from '@fastify/cors'
-import fastifyMultipart from '@fastify/multipart'
 
 import { appRoutes } from './routes'
 import { databaseHealth } from './helpers'
@@ -9,7 +9,7 @@ import { env } from './validators'
 const app = fastify()
 
 app.register(cors, { origin: '*', methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE']})
-app.register(fastifyMultipart)
+app.register(multipart)
 
 appRoutes.forEach(route => app.register(route))
 

@@ -77,13 +77,13 @@ export class SalesController {
     try {
       const { payment_id, sale_date, products } = newSaleSchema.parse(request.body)
 
-      const [paymentById] = await this.paymentsRepository.findOneBy('id', payment_id)
+      const paymentById = await this.paymentsRepository.findOneBy('id', payment_id)
       if (!paymentById) { return reply.status(404).send({ error: true, message: 'O método de pagamento não existe.' }) }
 
       let totalSale = 0
 
       for(const product of products) {
-        const [productExists] = await this.productsRepository.findOneBy('id', product.id)
+        const productExists = await this.productsRepository.findOneBy('id', product.id)
         if (!productExists) {
           return reply.status(404).send({
             error: true,

@@ -9,7 +9,7 @@ interface Departments {
 
 interface DepartmentsRepository {
   findAll (skip: number, limit: number, filters: any): Promise<Departments[]>
-  findOneBy (field: string | number, value: string | number): Promise<Departments[]>
+  findOneBy (field: string | number, value: string | number): Promise<Departments>
 }
 
 export {

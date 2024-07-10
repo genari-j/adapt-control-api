@@ -59,10 +59,10 @@ interface UserByField {
 }
 
 interface UsersRepository {
-  create (payload: CreateUser): Promise<Users[]>
+  create (payload: CreateUser): Promise<Users>
   findAllUsers (skip: number, limit: number, filters: any): Promise<Users>
   findAll (skip: number, limit: number, filters: any): Promise<User[]>
-  findOneBy (field: string | number, value: string | number | undefined): Promise<User[]>
+  findOneBy (field: string | number, value: string | number | undefined): Promise<User>
   findUserById (id: number): Promise<UserById | null>
   findUserByExistingCode (id: number, code: number): Promise<UserByField | null>
   findUserByExistingEmail (id: number, email: string): Promise<UserByField | null>

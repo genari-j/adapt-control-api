@@ -81,26 +81,24 @@ export class ProductsController {
       if (!productById) { return reply.status(404).send({ error: true, message: 'O Produto especificado não existe.' }) }
 
       const product = {
-        product: {
-          id: productById.id,
-          name: productById.name,
-          description: productById.description,
-          quantity: productById.quantity,
-          price: productById.price,
-          category: {
-            id: productById.category.id,
-            name: productById.category.name,
-            description: productById.category.description,
-            active: productById.category.description,
-            created_at: productById.category.created_at,
-            updated_at: productById.category.updated_at
-          },
-          avatar: productById.avatar,
-          active: productById.active,
-          created_at: productById.created_at,
-          updated_at: productById.updated_at,
-          deleted_at: productById.deleted_at
-        }
+        id: productById.id,
+        name: productById.name,
+        description: productById.description,
+        quantity: productById.quantity,
+        price: productById.price,
+        category: {
+          id: productById.category.id,
+          name: productById.category.name,
+          description: productById.category.description,
+          active: productById.category.description,
+          created_at: productById.category.created_at,
+          updated_at: productById.category.updated_at
+        },
+        avatar: productById.avatar,
+        active: productById.active,
+        created_at: productById.created_at,
+        updated_at: productById.updated_at,
+        deleted_at: productById.deleted_at
       }
 
       return reply.status(200).send({
@@ -117,7 +115,7 @@ export class ProductsController {
     try {
       const { name, description, quantity, price, category_id } = createProductBodySchema.parse(request.body)
 
-      const [productByName] = await this.productsRepository.findOneBy('name', name)
+      const productByName = await this.productsRepository.findOneBy('name', name)
       if (productByName) { return reply.status(400).send({ error: true, message: 'O produto informado já existe.' }) }
 
       const [categoryById] = await this.categoriesRepository.findOneBy('id', category_id)
@@ -146,7 +144,10 @@ export class ProductsController {
   async update (request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id } = productParamsSchema.parse(request.params)
-      const { name, description, quantity, price, category_id, active } = updateProductBodySchema.parse(request.body)
+      const { name, description, quantity, price, category_id, active, avatar } = updateProductBodySchema.parse(request.body)
+
+      const file = request.file
+      console.log(file)
 
       const productById = await this.productsRepository.findProductById(Number(id))
       if (!productById) return reply.status(404).send({ error: true, message: 'O Produto informado não existe.' })
@@ -190,7 +191,7 @@ export class ProductsController {
       const { id } = productParamsSchema.parse(request.params)
       if (!id) { return reply.status(400).send({ error: true, message: 'ID do produto não informado.' }) }
 
-      const [product] = await this.productsRepository.findOneBy('id', Number(id))
+      const product = await this.productsRepository.findOneBy('id', Number(id))
       if (!product) { return reply.status(404).send({ error: true, message: 'O usuário informado não existe.' }) }
 
       await this.productsRepository.disableProduct(Number(id))

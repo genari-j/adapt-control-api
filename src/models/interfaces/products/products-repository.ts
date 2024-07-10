@@ -55,7 +55,7 @@ interface ProductsRepository {
   create (payload: CreateProduct): Promise<Product[]>
   findAll (skip: number, limit: number, filters: any): Promise<Product[]>
   findAllProducts (skip: number, limit: number, filters: any): Promise<Products>
-  findOneBy (field: string | number, value: string | number): Promise<Product[]>
+  findOneBy (field: string | number, value: string | number): Promise<Product>
   findProductById (id: number): Promise<ProductById | null>
   findProductByExistingName (id: number, name: string): Promise<Product | null>
   findByIdAndUpdate (id: number, payload: {}): Promise<UpdateProduct | null>

@@ -63,7 +63,7 @@ export class UsersController {
 
       const { sub } = result
       const { password, confirmPassword } = confirmNewPswSchema.parse(request.body)
-      const [user] = await this.usersRepository.findOneBy('id', Number(sub))
+      const user = await this.usersRepository.findOneBy('id', Number(sub))
 
       if (!user) { return reply.status(404).send({ error: true, message: 'O Usuário especificado não foi encontrado.' }) }
       if (password !== confirmPassword) { return reply.status(400).send({ error: true, message: 'As senhas especificadas não conferem.' }) }
@@ -87,7 +87,7 @@ export class UsersController {
     try {
       const { email } = solResetPasswordSchema.parse(request.body)
 
-      const [userByEmail] = await this.usersRepository.findOneBy('email', email)
+      const userByEmail = await this.usersRepository.findOneBy('email', email)
       if (!userByEmail) { reply.status(404).send({ error: true, message: 'O E-mail especificado não foi encontrado.' }) }
 
       const token = jwt.sign(
@@ -119,7 +119,7 @@ export class UsersController {
     try {
       const { user_code, password } = signInBodySchema.parse(request.body)
 
-      const [user] = await this.usersRepository.findOneBy('user_code', user_code)
+      const user = await this.usersRepository.findOneBy('user_code', user_code)
 
       if (!user || user.active !== true || user.deleted_at !== null) {
         return reply.status(401).send({
@@ -132,6 +132,7 @@ export class UsersController {
       if (!compareUserPassword) { return reply.status(401).send({ error: true, message: 'Não autorizado.' }) }
 
       const profiles = await this.profilePermissionsRepository.findByProfileId(user.profile_id)
+      const departments = await this.departmentsRepository.findOneBy('id', user.department_id)
 
       const token = jwt.sign(
         {
@@ -139,7 +140,7 @@ export class UsersController {
           name: user.name,
           user_code: user.user_code,
           email: user.email,
-          department_id: user.department_id,
+          departments,
           profiles,
           active: user.active,
           avatar: user.avatar,
@@ -164,16 +165,16 @@ export class UsersController {
     try {
       const { name, user_code, email, password, department_id, profile_id } = signUpBodySchema.parse(request.body)
 
-      const [userByCode] = await this.usersRepository.findOneBy('user_code', user_code)
+      const userByCode = await this.usersRepository.findOneBy('user_code', user_code)
       if (userByCode) { return reply.status(400).send({ error: true, message: 'O código informado já existe.' }) }
 
-      const [userByEmail] = await this.usersRepository.findOneBy('email', email)
+      const userByEmail = await this.usersRepository.findOneBy('email', email)
       if (userByEmail) { return reply.status(400).send({ error: true, message: 'Erro ao utilizar este email.' }) }
 
-      const [departmentById] = await this.departmentsRepository.findOneBy('id', department_id)
+      const departmentById = await this.departmentsRepository.findOneBy('id', department_id)
       if (!departmentById) { return reply.status(404).send({ error: true, message: 'O departamento informado não existe.' }) }
 
-      const [profileById] = await this.profilesRepository.findOneBy('id', profile_id)
+      const profileById = await this.profilesRepository.findOneBy('id', profile_id)
       if (!profileById) { return reply.status(404).send({ error: true, message: 'O perfil informado não existe.' }) }
 
       const encryptedPassword = await cryptPassword(password)
@@ -294,50 +295,52 @@ export class UsersController {
   async update (request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id } = userParamsSchema.parse(request.params)
-      const { name, user_code, email, department_id, profile_id, active } = updateUserBodySchema.parse(request.body)
+      const { name, user_code, email, department_id, profile_id, active, avatar } = updateUserBodySchema.parse(request.body)
+      console.log('ID:', id)
+      console.log('DADOS:', name, user_code, email, department_id, profile_id, active, avatar)
 
-      const userById = await this.usersRepository.findUserById(Number(id))
-      if (!userById) { return reply.status(404).send({ error: true, message: 'O usuário informado não existe.' }) }
+      // const userById = await this.usersRepository.findUserById(Number(id))
+      // if (!userById) { return reply.status(404).send({ error: true, message: 'O usuário informado não existe.' }) }
 
-      const payload: any = {}
+      // const payload: any = {}
 
-      if (name) { payload.name = name }
+      // if (name) { payload.name = name }
 
-      if (user_code) {
-        const userByCode = await this.usersRepository.findUserByExistingCode(Number(id), user_code)
-        if (userByCode) { return reply.status(400).send({ error: true, message: 'O código informado já existe.' }) }
-        payload.user_code = user_code
-      }
+      // if (user_code) {
+      //   const userByCode = await this.usersRepository.findUserByExistingCode(Number(id), user_code)
+      //   if (userByCode) { return reply.status(400).send({ error: true, message: 'O código informado já existe.' }) }
+      //   payload.user_code = user_code
+      // }
 
-      if (email) {
-        const userByEmail = await this.usersRepository.findUserByExistingEmail(Number(id), email)
-        if (userByEmail) { return reply.status(400).send({ error: true, message: 'O email informado já existe.' }) }
-        payload.email = email
-      }
+      // if (email) {
+      //   const userByEmail = await this.usersRepository.findUserByExistingEmail(Number(id), email)
+      //   if (userByEmail) { return reply.status(400).send({ error: true, message: 'O email informado já existe.' }) }
+      //   payload.email = email
+      // }
 
-      if (department_id) {
-        const [departmentById] = await this.departmentsRepository.findOneBy('id', department_id)
-        if (!departmentById) { return reply.status(404).send({ error: true, message: 'O departamento informado não existe.' }) }
-        payload.department_id = department_id
-      }
+      // if (department_id) {
+      //   const [departmentById] = await this.departmentsRepository.findOneBy('id', department_id)
+      //   if (!departmentById) { return reply.status(404).send({ error: true, message: 'O departamento informado não existe.' }) }
+      //   payload.department_id = department_id
+      // }
 
-      // Verificar como aplicar essa atualização somente pra gestor e acima de gestor
-      if (profile_id) {
-        const [profileById] = await this.profilesRepository.findOneBy('id', profile_id)
-        if (!profileById) { return reply.status(404).send({ error: true, message: 'O perfil informado não existe.' }) }
-        payload.profile_id = profile_id
-      }
+      // // Verificar como aplicar essa atualização somente pra gestor e acima de gestor
+      // if (profile_id) {
+      //   const [profileById] = await this.profilesRepository.findOneBy('id', profile_id)
+      //   if (!profileById) { return reply.status(404).send({ error: true, message: 'O perfil informado não existe.' }) }
+      //   payload.profile_id = profile_id
+      // }
 
-      if (active || String(active) === '0') { payload.active = active }
+      // if (active || String(active) === '0') { payload.active = active }
 
-      if (Object.keys(payload).length) {
-        await this.usersRepository.findByIdAndUpdate(Number(id), payload)
-      }
+      // if (Object.keys(payload).length) {
+      //   await this.usersRepository.findByIdAndUpdate(Number(id), payload)
+      // }
 
-      return reply.status(200).send({
-        error: false,
-        message: 'O usuário foi atualizado.'
-      })
+      // return reply.status(200).send({
+      //   error: false,
+      //   message: 'O usuário foi atualizado.'
+      // })
 
     } catch (err) {
       reply.status(500).send(`Algo saiu como não esperado: ${err}`)
@@ -350,7 +353,7 @@ export class UsersController {
 
       if (!id) { return reply.status(400).send({ error: true, message: 'ID do usuário não informado.' }) }
 
-      const [user] = await this.usersRepository.findOneBy('id', Number(id))
+      const user = await this.usersRepository.findOneBy('id', Number(id))
       if (!user) { return reply.status(404).send({ error: true, message: 'O usuário informado não existe.' }) }
 
       await this.usersRepository.disableUser(Number(id))

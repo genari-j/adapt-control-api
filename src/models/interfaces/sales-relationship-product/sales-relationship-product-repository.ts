@@ -7,8 +7,8 @@ type SalesRelationshipProduct = SaleRelationshipProductType & { id?: number, cre
 
 interface SalesRelationshipProductRepository {
   findAll (skip: number, limit: number, filters: any): Promise<SalesRelationshipProduct[]>
-  findOneBy (field: string | number, value: string | number): Promise<SalesRelationshipProduct[]>
-  create (payload: SaleRelationshipProductType): Promise<SaleRelationshipProductType[]>
+  findOneBy (field: string | number, value: string | number): Promise<SalesRelationshipProduct>
+  create (payload: SaleRelationshipProductType): Promise<SaleRelationshipProductType>
 }
 
 export {
