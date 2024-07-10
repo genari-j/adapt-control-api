@@ -5,8 +5,8 @@ export const mailService = async (email: string, subject: string, html: any) => 
   const transport = nodemailer.createTransport({
     host: env.HOST_RESET_PSW as string,
     port: env.PORT_RESET_PSW as number,
-    secure: false, // use TLS
-    requireTLS: true, // require a secure connection
+    secure: false,
+    requireTLS: true,
     auth: {
       user: env.EMAIL_RESET_PSW as string,
       pass: env.PSW_RESET_PSW as string

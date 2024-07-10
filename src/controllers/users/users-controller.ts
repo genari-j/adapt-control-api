@@ -296,51 +296,49 @@ export class UsersController {
     try {
       const { id } = userParamsSchema.parse(request.params)
       const { name, user_code, email, department_id, profile_id, active, avatar } = updateUserBodySchema.parse(request.body)
-      console.log('ID:', id)
-      console.log('DADOS:', name, user_code, email, department_id, profile_id, active, avatar)
 
-      // const userById = await this.usersRepository.findUserById(Number(id))
-      // if (!userById) { return reply.status(404).send({ error: true, message: 'O usuário informado não existe.' }) }
+      const userById = await this.usersRepository.findUserById(Number(id))
+      if (!userById) { return reply.status(404).send({ error: true, message: 'O usuário informado não existe.' }) }
 
-      // const payload: any = {}
+      const payload: any = {}
 
-      // if (name) { payload.name = name }
+      if (name) { payload.name = name }
 
-      // if (user_code) {
-      //   const userByCode = await this.usersRepository.findUserByExistingCode(Number(id), user_code)
-      //   if (userByCode) { return reply.status(400).send({ error: true, message: 'O código informado já existe.' }) }
-      //   payload.user_code = user_code
-      // }
+      if (user_code) {
+        const userByCode = await this.usersRepository.findUserByExistingCode(Number(id), user_code)
+        if (userByCode) { return reply.status(400).send({ error: true, message: 'O código informado já existe.' }) }
+        payload.user_code = user_code
+      }
 
-      // if (email) {
-      //   const userByEmail = await this.usersRepository.findUserByExistingEmail(Number(id), email)
-      //   if (userByEmail) { return reply.status(400).send({ error: true, message: 'O email informado já existe.' }) }
-      //   payload.email = email
-      // }
+      if (email) {
+        const userByEmail = await this.usersRepository.findUserByExistingEmail(Number(id), email)
+        if (userByEmail) { return reply.status(400).send({ error: true, message: 'O email informado já existe.' }) }
+        payload.email = email
+      }
 
-      // if (department_id) {
-      //   const [departmentById] = await this.departmentsRepository.findOneBy('id', department_id)
-      //   if (!departmentById) { return reply.status(404).send({ error: true, message: 'O departamento informado não existe.' }) }
-      //   payload.department_id = department_id
-      // }
+      if (department_id) {
+        const departmentById = await this.departmentsRepository.findOneBy('id', department_id)
+        if (!departmentById) { return reply.status(404).send({ error: true, message: 'O departamento informado não existe.' }) }
+        payload.department_id = department_id
+      }
 
-      // // Verificar como aplicar essa atualização somente pra gestor e acima de gestor
-      // if (profile_id) {
-      //   const [profileById] = await this.profilesRepository.findOneBy('id', profile_id)
-      //   if (!profileById) { return reply.status(404).send({ error: true, message: 'O perfil informado não existe.' }) }
-      //   payload.profile_id = profile_id
-      // }
+      // Verificar como aplicar essa atualização somente pra gestor e acima de gestor
+      if (profile_id) {
+        const profileById = await this.profilesRepository.findOneBy('id', profile_id)
+        if (!profileById) { return reply.status(404).send({ error: true, message: 'O perfil informado não existe.' }) }
+        payload.profile_id = profile_id
+      }
 
-      // if (active || String(active) === '0') { payload.active = active }
+      if (active || String(active) === '0') { payload.active = active }
 
-      // if (Object.keys(payload).length) {
-      //   await this.usersRepository.findByIdAndUpdate(Number(id), payload)
-      // }
+      if (Object.keys(payload).length) {
+        await this.usersRepository.findByIdAndUpdate(Number(id), payload)
+      }
 
-      // return reply.status(200).send({
-      //   error: false,
-      //   message: 'O usuário foi atualizado.'
-      // })
+      return reply.status(200).send({
+        error: false,
+        message: 'O usuário foi atualizado.'
+      })
 
     } catch (err) {
       reply.status(500).send(`Algo saiu como não esperado: ${err}`)
