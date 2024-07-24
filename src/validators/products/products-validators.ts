@@ -19,9 +19,8 @@ export const createProductBodySchema = z.object({
 export const updateProductBodySchema = z.object({
   name: z.string().min(1, 'Nome inválido'),
   description: z.string().min(1, 'Descrição inválida'),
-  quantity: z.number().min(1, 'Quantidade inválida'),
-  category_id: z.number().min(1, 'Categoria inválida'),
-  price: z.number().multipleOf(0.01),
-  active: z.boolean().optional(),
-  avatar: z.any()
+  quantity: z.coerce.number().min(1, 'Quantidade inválida'),
+  category_id: z.coerce.number().min(1, 'Categoria inválida'),
+  price: z.coerce.number().min(1, 'Valor inválido'),
+  active: z.boolean().optional()
 })

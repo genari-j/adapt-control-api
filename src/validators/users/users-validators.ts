@@ -47,6 +47,5 @@ export const updateUserBodySchema = z.object({
     }),
   department_id: z.number().min(1, 'Departamento inválido'),
   profile_id: z.number().min(1, 'Perfil inválido'),
-  active: z.boolean().optional(),
-  avatar: z.instanceof(File).optional()
+  active: z.boolean().optional()
 })
