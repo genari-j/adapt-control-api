@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyPluginAsync } from 'fastify'
 
 import { authMiddleware } from '../../middlewares/auth'
-import { createStorage } from '../../helpers'
+import { createStorage, usersPath } from '../../helpers'
 
 import { UsersController } from '../../controllers/users/users-controller'
 import { UsersRepository } from '../../models/repositories/users'
@@ -16,7 +16,7 @@ const controller = new UsersController(
   ProfilePermissionsRepository
 )
 
-const upload = createStorage('./uploads/users')
+const upload = createStorage(usersPath)
 
 const usersRoutes: FastifyPluginAsync = async (fastify: FastifyInstance) => {
   fastify.post('/signin', controller.login.bind(controller))
@@ -28,7 +28,8 @@ const usersRoutes: FastifyPluginAsync = async (fastify: FastifyInstance) => {
 
   fastify.get('/users', { preHandler: [authMiddleware] }, controller.getAll.bind(controller))
   fastify.get('/users/:id', { preHandler: [authMiddleware] }, controller.getById.bind(controller))
-  fastify.post('/users/:id', { preHandler: [authMiddleware, upload.single('avatar')] }, controller.update.bind(controller))
+
+  fastify.put('/users/:id', { preHandler: [authMiddleware, upload.single('avatar')] }, controller.update.bind(controller))
   fastify.delete('/users/:id', { preHandler: [authMiddleware] }, controller.delete.bind(controller))
 }
 
