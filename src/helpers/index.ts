@@ -1,4 +1,6 @@
 export * from './check-db-seeds'
+export * from './clear-text'
 export * from './crypt-password'
 export * from './database-health'
 export * from './file-storage'
+export * from './save-or-delete-files'
