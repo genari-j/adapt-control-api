@@ -1,9 +1,11 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 
-import Decimal from 'decimal.js'
-
 import { UpdateProduct, ProductsRepository } from '../../models/interfaces/products'
 import { CategoriesRepository } from '../../models/interfaces/categories'
+
+import Decimal from 'decimal.js'
+import { existsSync } from 'node:fs'
+import { cleanString, productsPath, deleteTmpFile, saveFile } from '../../helpers'
 
 import {
   env,
@@ -144,19 +146,39 @@ export class ProductsController {
   async update (request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id } = productParamsSchema.parse(request.params)
-      const { name, description, quantity, price, category_id, active, avatar } = updateProductBodySchema.parse(request.body)
+      const { name, description, quantity, price, category_id, active } = updateProductBodySchema.parse(request.body)
 
-      const file = request.file
-      console.log(file)
+      const productAvatar: any = request.file
+
+      if (existsSync(`${productsPath}/${productAvatar?.filename}`)) {
+        return reply.status(400).send({
+          error: true,
+          message: 'Outro aquivo com esse nome já existe.'
+        })
+      }
+
+      const finalFileName = `${Date.now() + '-' + cleanString(productAvatar?.originalname)}`
 
       const productById = await this.productsRepository.findProductById(Number(id))
-      if (!productById) return reply.status(404).send({ error: true, message: 'O Produto informado não existe.' })
+      if (!productById) {
+        deleteTmpFile(productAvatar?.path)
+        return reply.status(404).send({
+          error: true,
+          message: 'O Produto informado não existe.'
+        })
+      }
 
       const payload: UpdateProduct = {}
 
       if (name) {
         const productByName = await this.productsRepository.findProductByExistingName(Number(id), name)
-        if (productByName) { return reply.status(400).send({ error: true, message: 'O Produto informado já existe.' }) }
+        if (productByName) {
+          deleteTmpFile(productAvatar?.path)
+          return reply.status(400).send({
+            error: true,
+            message: 'O Produto informado já existe.'
+          })
+        }
         payload.name = name
       }
 
@@ -167,14 +189,24 @@ export class ProductsController {
       if (active || String(active) === '0') { payload.active = active }
 
       if (category_id) {
-        const [categoryById] = await this.categoriesRepository.findOneBy('id', category_id)
-        if (!categoryById) { return reply.status(404).send({ error: true, message: 'O Produto informado não existe.' }) }
+        const categoryById = await this.categoriesRepository.findOneBy('id', category_id)
+        if (!categoryById) {
+          deleteTmpFile(productAvatar?.path)
+          return reply.status(404).send({
+            error: true,
+            message: 'O Produto informado não existe.'
+          })
+        }
         payload.category_id = category_id
       }
+
+      if (finalFileName.length > 0) { payload.avatar = finalFileName }
 
       if (Object.keys(payload).length) {
         await this.productsRepository.findByIdAndUpdate(Number(id), payload)
       }
+
+      await saveFile(productAvatar?.path, `${productsPath}/${finalFileName}`)
 
       return reply.status(200).send({
         error: false,
@@ -182,6 +214,7 @@ export class ProductsController {
       })
 
     } catch (err) {
+      // if (request.file !== undefined) deleteTmpFile(productAvatar?.path)
       return reply.status(500).send(`Algo saiu como não esperado: ${err}`)
     }
   }
