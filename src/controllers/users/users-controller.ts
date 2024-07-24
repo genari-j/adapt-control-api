@@ -3,7 +3,7 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import jwt from 'jsonwebtoken'
 import bcryptjs from 'bcryptjs'
 
-import path from 'path'
+import path from 'node:path'
 import fs from 'node:fs'
 import { mailService } from '../../services'
 import { cryptPassword } from '../../helpers'
@@ -295,7 +295,7 @@ export class UsersController {
   async update (request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id } = userParamsSchema.parse(request.params)
-      const { name, user_code, email, department_id, profile_id, active, avatar } = updateUserBodySchema.parse(request.body)
+      const { name, user_code, email, department_id, profile_id, active } = updateUserBodySchema.parse(request.body)
 
       const userById = await this.usersRepository.findUserById(Number(id))
       if (!userById) { return reply.status(404).send({ error: true, message: 'O usuário informado não existe.' }) }
