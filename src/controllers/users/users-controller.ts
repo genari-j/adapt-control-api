@@ -18,9 +18,9 @@ import {
   signInBodySchema,
   signUpBodySchema,
   updateUserBodySchema,
-  solResetPasswordSchema,
+  passwordRecoverySchema,
   bearerTokenSchema,
-  confirmNewPswSchema,
+  setNewPasswordSchema,
   userParamsSchema,
   userQuerySchema,
 } from '../../validators'
@@ -43,8 +43,23 @@ export class UsersController {
     this.profilePermissionsRepository = profilePermissionsRepository
   }
 
-  async verifyToken (_request: FastifyRequest, reply: FastifyReply) {
+  async verifyToken (request: FastifyRequest, reply: FastifyReply) {
     try {
+      const { authorization } = request.headers
+      const bearerToken = bearerTokenSchema.parse(authorization?.replace('Bearer ', ''))
+      const result = jwt.verify(bearerToken, env.APP_SECRET as string)
+
+      const { sub } = result
+
+      const user = await this.usersRepository.findOneBy('id', Number(sub))
+
+      if (!user) {
+        return reply.status(401).send({
+          error: true,
+          message: 'Não autorizado.'
+        })
+      }
+
       return reply.status(200).send({
         error: false,
         message: 'Requisição validada.'
@@ -62,7 +77,7 @@ export class UsersController {
       const result = jwt.verify(bearerToken, env.APP_SECRET as string)
 
       const { sub } = result
-      const { password, confirmPassword } = confirmNewPswSchema.parse(request.body)
+      const { password, confirmPassword } = setNewPasswordSchema.parse(request.body)
       const user = await this.usersRepository.findOneBy('id', Number(sub))
 
       if (!user) { return reply.status(404).send({ error: true, message: 'O Usuário especificado não foi encontrado.' }) }
@@ -85,7 +100,7 @@ export class UsersController {
 
   async solicitationResetPassword (request: FastifyRequest, reply: FastifyReply) {
     try {
-      const { email } = solResetPasswordSchema.parse(request.body)
+      const { email } = passwordRecoverySchema.parse(request.body)
 
       const userByEmail = await this.usersRepository.findOneBy('email', email)
       if (!userByEmail) { reply.status(404).send({ error: true, message: 'O E-mail especificado não foi encontrado.' }) }

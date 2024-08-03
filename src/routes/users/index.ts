@@ -23,8 +23,8 @@ const usersRoutes: FastifyPluginAsync = async (fastify: FastifyInstance) => {
   fastify.post('/signup', { preHandler: [authMiddleware] }, controller.create.bind(controller))
 
   fastify.get('/verify-token', controller.verifyToken.bind(controller))
-  fastify.post('/sol-reset-psw', controller.solicitationResetPassword.bind(controller))
-  fastify.post('/update-password', controller.updateUserPassword.bind(controller))
+  fastify.post('/password/recovery', controller.solicitationResetPassword.bind(controller))
+  fastify.patch('/password/set-new', controller.updateUserPassword.bind(controller))
 
   fastify.get('/users', { preHandler: [authMiddleware] }, controller.getAll.bind(controller))
   fastify.get('/users/:id', { preHandler: [authMiddleware] }, controller.getById.bind(controller))

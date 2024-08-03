@@ -56,7 +56,7 @@ A API simula as funcionalidades para controlar um comércio, seja um Mercado, Lo
 
 1. Inicie a aplicação com yarn -> `yarn dev`
 
-2. A API ficará acessível em `http://localhost:3002/`
+2. A API ficará acessível em -> `http://localhost:3002/`
     - Caso tenha colocado outra porta, apenas altere `3002` para sua porta;
 
 #### API Endpoints
@@ -73,8 +73,8 @@ A API fornece os seguintes Endpoints:
 | /users/:id            | PUT                   | Update user                    |
 | /users/:id            | DELETE                | Disable user                   |
 | /verify-token         | GET                   | Verify token to reset password |
-| /sol-reset-psw        | POST                  | Solicitation to reset password |
-| /update-password      | POST                  | Confirm new password           |
+| /password/recovery    | POST                  | Solicitation to reset password |
+| /password/set-new     | PATCH                 | Confirm new password           |
 
 #### Departments:
 

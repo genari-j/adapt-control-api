@@ -8,6 +8,10 @@ export const productParamsSchema = z.object({
   id: z.string().min(1, 'Produto inválido')
 })
 
+export const productFileParamsSchema = z.object({
+  filename: z.string().min(1, 'Nome de arquivo inválido')
+})
+
 export const createProductBodySchema = z.object({
   name: z.string().min(1, 'Produto inválido'),
   description: z.string().min(1, 'Descrição inválida'),

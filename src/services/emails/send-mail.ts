@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer'
 import { env } from '../../validators'
 
-export const mailService = async (email: string, subject: string, html: any) => {
+export const mailService = async (email: string, subject: string, html: string) => {
   const transport = nodemailer.createTransport({
     host: env.HOST_RESET_PSW as string,
     port: env.PORT_RESET_PSW as number,
@@ -23,7 +23,7 @@ export const mailService = async (email: string, subject: string, html: any) => 
   try {
     const info = await transport.sendMail(mailOptions)
     console.log('Email sent:', info.response)
-  } catch (err: any) {
+  } catch (err) {
     console.error('Error sending email:', err)
   }
 }

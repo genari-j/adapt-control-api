@@ -28,6 +28,13 @@ class Repository extends RestRepository {
         where: whereClause
       })
     ])
+
+    // {data.forEach(sale => {
+    //   sale.Sale_relationship_product.forEach(relation => {
+    //     relation.product.name
+    //   })
+    // })}
+
     const pages = Math.ceil(total / take)
     const currentPage = Math.ceil(skip / take) + 1
 

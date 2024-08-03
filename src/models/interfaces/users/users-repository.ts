@@ -58,9 +58,13 @@ interface UserByField {
   deleted_at: Date | null
 }
 
+interface filters {
+  name: string | undefined
+}
+
 interface UsersRepository {
   create (payload: CreateUser): Promise<Users>
-  findAllUsers (skip: number, limit: number, filters: any): Promise<Users>
+  findAllUsers (skip: number, limit: number, filters: filters): Promise<Users>
   findAll (skip: number, limit: number, filters: any): Promise<User[]>
   findOneBy (field: string | number, value: string | number | undefined): Promise<User>
   findUserById (id: number): Promise<UserById | null>

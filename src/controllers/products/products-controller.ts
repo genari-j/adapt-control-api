@@ -4,7 +4,8 @@ import { UpdateProduct, ProductsRepository } from '../../models/interfaces/produ
 import { CategoriesRepository } from '../../models/interfaces/categories'
 
 import Decimal from 'decimal.js'
-import { existsSync } from 'node:fs'
+import fs, { existsSync } from 'node:fs'
+import path from 'node:path'
 import { cleanString, productsPath, deleteTmpFile, saveFile } from '../../helpers'
 
 import {
@@ -12,7 +13,8 @@ import {
   productQuerySchema,
   createProductBodySchema,
   updateProductBodySchema,
-  productParamsSchema
+  productParamsSchema,
+  productFileParamsSchema
 } from '../../validators'
 
 export class ProductsController {
@@ -25,6 +27,41 @@ export class ProductsController {
   ) {
     this.productsRepository = productsRepository
     this.categoriesRepository = categoriesRepository
+  }
+
+  async getProductFileByName (request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { filename } = productFileParamsSchema.parse(request.params)
+
+      const productFile = path.join(productsPath, filename)
+
+      if (!filename) {
+        return reply.status(400).send({
+          error: true,
+          message: 'Não há especificação para filename.'
+        })
+      }
+
+      if (!fs.existsSync(productFile)) {
+        return reply.status(404).send({
+          error: true,
+          message: 'A imagem especificada não existe.'
+        })
+      }
+
+      if (fs.existsSync(productFile)) {
+        // Tratativa para lider com arquivo encontrado
+        // Transformar já aqui em arrayBuffer?
+      }
+
+      return reply.status(200).send({
+        error: false,
+        data: productFile
+      })
+
+    } catch (err) {
+      return reply.status(500).send(`Algo saiu como não esperado: ${err}`)
+    }
   }
 
   async getAll (request: FastifyRequest, reply: FastifyReply) {

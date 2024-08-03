@@ -2,12 +2,12 @@ import { z } from 'zod'
 
 export const bearerTokenSchema = z.string().min(1, 'Token inválido')
 
-export const confirmNewPswSchema = z.object({
+export const setNewPasswordSchema = z.object({
   password: z.string().min(1, 'Senha inválida'),
   confirmPassword: z.string().min(1, 'Senha inválida')
 })
 
-export const solResetPasswordSchema = z.object({
+export const passwordRecoverySchema = z.object({
   email: z.string().min(1, 'Email inválido')
 })
 
