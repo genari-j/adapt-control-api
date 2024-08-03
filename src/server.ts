@@ -1,6 +1,7 @@
 import fastify, { FastifyRequest, FastifyReply } from 'fastify'
 import multipart from '@fastify/multipart'
 import cors from '@fastify/cors'
+import 'dotenv/config'
 
 import { appRoutes } from './routes'
 import { databaseHealth } from './helpers'
@@ -20,7 +21,7 @@ app.get('/', async (_request: FastifyRequest, reply: FastifyReply) => {
   })
 })
 
-app.listen({ port: Number(env.APP_PORT)})
+app.listen({ port: Number(process.env.PORT) || Number(env.APP_PORT)})
   .then(async () => {
     await databaseHealth()
     console.log(`Application is running on port: ${env.APP_PORT}`
