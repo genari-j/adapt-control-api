@@ -7,7 +7,6 @@ import { appRoutes } from './routes'
 import { databaseHealth } from './helpers'
 import { env } from './validators'
 
-const port = Number(process.env.PORT) || Number(env.APP_PORT)
 const app = fastify()
 
 app.register(cors, { origin: '*', methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE']})
@@ -22,7 +21,7 @@ app.get('/', async (_request: FastifyRequest, reply: FastifyReply) => {
   })
 })
 
-app.listen({ port: port, host: "0.0.0.0"})
+app.listen({ port: Number(process.env.PORT) || Number(env.APP_PORT), host: "0.0.0.0"})
   .then(async () => {
     await databaseHealth()
     console.log(`Application is running on port: ${env.APP_PORT}`

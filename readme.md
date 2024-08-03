@@ -30,7 +30,7 @@ A API simula as funcionalidades para controlar um comércio, seja um Mercado, Lo
 
 1. Clone o repositório:
 
-    - `git clone https://github.com/victorgenari/adapt-control-api`
+    - `git clone https://github.com/genari-j/adapt-control-api.git`
 
 2. Instale as dependências com yarn
 
