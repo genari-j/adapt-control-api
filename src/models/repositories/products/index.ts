@@ -1,5 +1,3 @@
 import ProductsRepository from './products-repository'
 
-export {
-  ProductsRepository
-}
+export { ProductsRepository }

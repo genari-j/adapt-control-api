@@ -1,5 +1,3 @@
 import PaymentsRepository from './payments-repository'
 
-export {
-  PaymentsRepository
-}
+export { PaymentsRepository }

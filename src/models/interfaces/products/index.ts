@@ -1,15 +1,3 @@
-import {
-  Products,
-  Product,
-  UpdateProduct,
-  ProductById,
-  ProductsRepository
-} from './products-repository'
+import { Product, ProductById, Products, ProductsRepository, UpdateProduct } from './products-repository'
 
-export {
-  Products,
-  Product,
-  UpdateProduct,
-  ProductById,
-  ProductsRepository
-}
+export { Products, Product, UpdateProduct, ProductById, ProductsRepository }

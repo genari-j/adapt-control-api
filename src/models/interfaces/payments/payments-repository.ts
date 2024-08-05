@@ -1,14 +1,17 @@
 type PaymentType = {
-  name: string
+	name: string
 }
-type Payments = PaymentType & { id?: number, active?: Boolean, created_at?: Date, updated_at?: Date, deleted_at?: Date | null }
+type Payments = PaymentType & {
+	id?: number
+	active?: boolean
+	created_at?: Date
+	updated_at?: Date
+	deleted_at?: Date | null
+}
 
 interface PaymentsRepository {
-  findAll (skip: number, limit: number, filters: any): Promise<Payments[]>
-  findOneBy (field: string | number, value: string | number): Promise<Payments>
+	findAll(skip: number, limit: number, filters: any): Promise<Payments[]>
+	findOneBy(field: string | number, value: string | number): Promise<Payments>
 }
 
-export {
-  Payments,
-  PaymentsRepository
-}
+export type { Payments, PaymentsRepository }

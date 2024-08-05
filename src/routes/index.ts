@@ -1,17 +1,17 @@
-import departmentsRoutes from './departments'
-import usersRoutes from './users'
-import profilesRoutes from './profiles'
 import categoriesRoutes from './categories'
-import productsRoutes from './products'
+import departmentsRoutes from './departments'
 import paymentsRoutes from './payments'
+import productsRoutes from './products'
+import profilesRoutes from './profiles'
 import salesRoutes from './sales'
+import usersRoutes from './users'
 
 export const appRoutes = [
-  departmentsRoutes,
-  usersRoutes,
-  profilesRoutes,
-  categoriesRoutes,
-  productsRoutes,
-  paymentsRoutes,
-  salesRoutes
+	departmentsRoutes,
+	usersRoutes,
+	profilesRoutes,
+	categoriesRoutes,
+	productsRoutes,
+	paymentsRoutes,
+	salesRoutes,
 ]

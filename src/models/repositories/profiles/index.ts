@@ -1,5 +1,3 @@
 import ProfilesRepository from './profiles-repository'
 
-export {
-  ProfilesRepository
-}
+export { ProfilesRepository }
