@@ -21,6 +21,7 @@ export const updateProductBodySchema = z.object({
 	description: z.string().min(1, 'Descrição inválida'),
 	quantity: z.coerce.number().min(1, 'Quantidade inválida'),
 	category_id: z.coerce.number().min(1, 'Categoria inválida'),
+	offer_price: z.coerce.number().optional(),
 	price: z.coerce.number().min(1, 'Valor inválido'),
 	active: z.boolean().optional(),
 })

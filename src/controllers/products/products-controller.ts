@@ -41,6 +41,7 @@ export class ProductsController {
 					name: product.name,
 					description: product.description,
 					quantity: product.quantity,
+					offer_price: product.offer_price,
 					price: product.price,
 					category: {
 						id: product.category_id,
@@ -50,7 +51,7 @@ export class ProductsController {
 						created_at: product.category.created_at,
 						updated_at: product.category.updated_at,
 					},
-					avatar: `http://192.168.0.188:3002/public/${product.avatar}`,
+					avatar: `http://localhost:3002/uploads/products/${product.avatar}`,
 					active: product.active,
 					created_at: product.created_at,
 					updated_at: product.updated_at,
@@ -85,6 +86,7 @@ export class ProductsController {
 				name: productById.name,
 				description: productById.description,
 				quantity: productById.quantity,
+				offer_price: productById.offer_price,
 				price: productById.price,
 				category: {
 					id: productById.category.id,
@@ -94,7 +96,7 @@ export class ProductsController {
 					created_at: productById.category.created_at,
 					updated_at: productById.category.updated_at,
 				},
-				avatar: `http://192.168.0.188:3002/public/${productById.avatar}`,
+				avatar: `http://localhost:3002/uploads/products/${productById.avatar}`,
 				active: productById.active,
 				created_at: productById.created_at,
 				updated_at: productById.updated_at,
@@ -125,6 +127,7 @@ export class ProductsController {
 			}
 
 			const priceDecimal = new Decimal(price)
+
 			const payload = {
 				name,
 				description,
@@ -146,7 +149,9 @@ export class ProductsController {
 	async update(request: FastifyRequest, reply: FastifyReply) {
 		try {
 			const { id } = productParamsSchema.parse(request.params)
-			const { name, description, quantity, price, category_id, active } = updateProductBodySchema.parse(request.body)
+			const { name, description, quantity, offer_price, price, category_id, active } = updateProductBodySchema.parse(
+				request.body,
+			)
 
 			const productAvatar: any = request.file
 
@@ -187,6 +192,9 @@ export class ProductsController {
 			}
 			if (quantity) {
 				payload.quantity = quantity
+			}
+			if (offer_price) {
+				payload.offer_price = offer_price
 			}
 			if (price) {
 				payload.price = price

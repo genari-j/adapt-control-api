@@ -86,6 +86,7 @@ model Product {
   name                      String                      @unique
   description               String
   quantity                  Int
+  offer_price               Decimal?                    @db.Decimal(10, 2)
   price                     Decimal                     @db.Decimal(10, 2)
   category                  Categories                  @relation(fields: [category_id], references: [id])
   category_id               Int

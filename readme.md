@@ -20,7 +20,6 @@ A API simula as funcionalidades para controlar um comércio, seja um Mercado, Lo
 #### Tabela de conteúdo
 
 - [Instalação](#instalação)
-- [Configuração](#configuração)
 - [Usabilidade](#usabilidade)
 - [API Endpoints](#api-endpoints)
 - [Autenticação](#autenticação)
@@ -129,5 +128,5 @@ O sistema está lidando com permissões de usuários. Ao criar um usuário, é d
 É recomendável utilizar o [MySQL](https://www.mysql.com/) como Banco de Dados. Abaixo está listado novamente os comandos para lidar com Migrações e Seeds.
 
   - Aplicando migrações -> `npx prisma migrate dev`
-  - Poluindo o DB com seeds -> `npx prisma db seed`
-  - O projeto está rodando com [Prisma](https://www.prisma.io/) e caso queira alterar o serviço de Banco, é necessário alterar também o provider no arquivo `schema.prisma`
+  - Populando o DB com seeds -> `npx prisma db seed`
+  - O projeto está está utilizando [Prisma](https://www.prisma.io/) e caso queira alterar o serviço de Banco, é necessário alterar também o provider no arquivo `schema.prisma`

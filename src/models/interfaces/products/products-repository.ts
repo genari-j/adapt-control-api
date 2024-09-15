@@ -10,7 +10,9 @@ interface CreateProduct {
 }
 
 type ProductData = Prisma.ProductGetPayload<{
-	include: { category: true }
+	include: {
+		category: true
+	}
 }>
 
 type Products = {
@@ -25,6 +27,7 @@ interface ProductById {
 	name: string
 	description: string
 	quantity: number
+	offer_price: Decimal | number | null
 	price: Decimal | number
 	category: {
 		id: number
@@ -45,6 +48,7 @@ interface UpdateProduct {
 	name?: string
 	description?: string
 	quantity?: number | undefined
+	offer_price?: Decimal | number | null
 	price?: Decimal | undefined | number
 	category_id?: number
 	active?: boolean
