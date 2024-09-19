@@ -49,7 +49,7 @@ A API simula as funcionalidades para controlar um comércio, seja um Mercado, Lo
 5. Rode as migrações e as Seeds apontando para o DB criado
 
     - Aplicando migrações -> `npx prisma migrate dev`
-    - Poluindo o DB com seeds -> `npx prisma db seed`
+    - Populando o DB com seeds -> `npx prisma db seed`
 
 #### Usabilidade
 
