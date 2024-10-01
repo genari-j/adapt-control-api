@@ -121,7 +121,7 @@ export class ProductsController {
 				return reply.status(400).send({ error: true, message: 'O produto informado já existe.' })
 			}
 
-			const [categoryById] = await this.categoriesRepository.findOneBy('id', category_id)
+			const categoryById = await this.categoriesRepository.findOneBy('id', category_id)
 			if (!categoryById) {
 				return reply.status(404).send({ error: true, message: 'A categoria informada não existe.' })
 			}
@@ -231,7 +231,6 @@ export class ProductsController {
 				message: 'O produto foi atualizado.',
 			})
 		} catch (err) {
-			// if (request.file !== undefined) deleteTmpFile(productAvatar?.path)
 			return reply.status(500).send(`Algo saiu como não esperado: ${err}`)
 		}
 	}
