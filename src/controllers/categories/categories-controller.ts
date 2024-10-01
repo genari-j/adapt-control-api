@@ -39,7 +39,7 @@ export class CategoriesController {
 		try {
 			const { name, description } = createCategoryBodySchema.parse(request.body)
 
-			const [categoryByName] = await this.categoriesRepository.findOneBy('name', name)
+			const categoryByName = await this.categoriesRepository.findOneBy('name', name)
 			if (categoryByName) {
 				return reply.status(400).send({ error: true, message: 'A categoria informada já existe.' })
 			}

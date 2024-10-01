@@ -16,8 +16,8 @@ interface filters {
 
 interface CategoriesRepository {
 	findAll(skip: number, limit: number, filters: filters): Promise<Categories[]>
-	findOneBy(field: string | number, value: string | number): Promise<Categories[]>
-	create(payload: Categories): Promise<Categories[]>
+	findOneBy(field: string | number, value: string | number): Promise<Categories>
+	create(payload: Categories): Promise<Categories>
 }
 
 export type { Categories, CategoriesRepository }
