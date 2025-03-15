@@ -8,26 +8,7 @@ export interface SignInUsersToken {
 	token: string
 }
 
-export interface CreateUserBody {
-	name: string
-	user_code: number
-	email: string | undefined
-	password: string
-	department_id: number
-	profile_id: number
-}
-
-export interface UpdateUserBody {
-	name?: string
-	user_code?: number
-	email?: string | undefined
-	password?: string
-	department_id?: number
-	profile_id?: number
-	active?: boolean
-}
-
-export interface UserDefaultResponse {
+export interface UserBaseResponse {
 	id: number
 	name: string
 	user_code: number
@@ -41,6 +22,13 @@ export interface UserDefaultResponse {
 	updated_at: Date
 	deleted_at: Date | null
 }
+
+export type CreateUserBody = Omit<
+	UserBaseResponse,
+	'id' | 'active' | 'avatar' | 'created_at' | 'updated_at' | 'deleted_at'
+>
+
+export type UpdateUserBody = Partial<Omit<UserBaseResponse, 'id' | 'created_at' | 'updated_at' | 'deleted_at'>>
 
 type PrismaUsersType = Prisma.UsersGetPayload<{
 	include: {
@@ -56,9 +44,4 @@ export interface GetUsersResponse {
 	currentPage: number
 }
 
-export type GetUserResponse = Prisma.UsersGetPayload<{
-	include: {
-		department: true
-		profile: true
-	}
-}>
+export type GetUserResponse = PrismaUsersType
