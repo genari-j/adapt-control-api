@@ -1,4 +1,3 @@
-// GET ALL PROFILES - RESPONSE
 export interface GetProfilesResponse {
 	id: number
 	name: string

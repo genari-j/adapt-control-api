@@ -1,4 +1,3 @@
-// GET ALL DEPARTMENTS - RESPONSE
 export interface GetDepartmentsResponse {
 	id: number
 	name: string

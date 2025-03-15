@@ -1,4 +1,3 @@
-// GET ALL PROFILES PERMISSIONS - RESPONSE
 export interface GetProfilePermissionsResponse {
 	id: number
 	code: string
