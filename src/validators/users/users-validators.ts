@@ -24,7 +24,7 @@ export const signInBodySchema = z.object({
 		.number()
 		.min(1, 'Login inválido')
 		.transform((val) => Number(val)),
-	password: z.string().min(1, 'Senha inválida'),
+	password: z.string().min(1, 'Login inválido'),
 })
 
 export const signUpBodySchema = z.object({
