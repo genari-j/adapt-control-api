@@ -31,14 +31,16 @@ export class SalesController {
 
 	async getAll(request: FastifyRequest, reply: FastifyReply) {
 		try {
-			const page = Number((request.query as { page?: string }).page) || Number(env.INITIAL_DATA_OFFSET)
-			const limit = Number((request.query as { limit?: string }).limit) || Number(env.LIST_PER_PAGE)
-			const skip = (page - 1) * limit
+			const { page = env.INITIAL_DATA_OFFSET, limit = env.LIST_PER_PAGE } = request.query as {
+				page?: string
+				limit?: string
+			}
+			const skip = (Number(page) - 1) * Number(limit)
 
 			const { payment, date } = saleQuerySchema.parse(request.query)
 			const filters = { payment, date }
 
-			const { data, total, pages, currentPage } = await this.salesRepository.findAllSales(skip, limit, filters)
+			const { data, total, pages, currentPage } = await this.salesRepository.findAllSales(skip, Number(limit), filters)
 
 			const mappedSales = data?.map((sale) => {
 				return {

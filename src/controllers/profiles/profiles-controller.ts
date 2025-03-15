@@ -13,14 +13,20 @@ export class ProfilesController {
 
 	async getAll(request: FastifyRequest, reply: FastifyReply): Promise<void> {
 		try {
-			const page = Number((request.query as { page?: string }).page) || Number(env.INITIAL_DATA_OFFSET)
-			const limit = Number((request.query as { limit?: string }).limit) || Number(env.LIST_PER_PAGE)
-			const skip = (page - 1) * limit
+			const { page = env.INITIAL_DATA_OFFSET, limit = env.LIST_PER_PAGE } = request.query as {
+				page?: string
+				limit?: string
+			}
+			const skip = (Number(page) - 1) * Number(limit)
 
 			const { name } = profilesQuerySchema.parse(request.query)
 			const filters = { name }
 
-			const [profiles, total, totalPage, currentPage] = await this.profilesRepository.findAll(skip, limit, filters)
+			const [profiles, total, totalPage, currentPage] = await this.profilesRepository.findAll(
+				skip,
+				Number(limit),
+				filters,
+			)
 
 			return reply.status(200).send({
 				error: false,
